@@ -9,12 +9,15 @@ pipeline {
             steps { checkout scm }
         }
         stage('Install and Test') {
-            steps {
-                sh '''
-                    docker run --rm -v "$WORKSPACE:/workspace" -w /workspace python:3.12-slim sh -c "pip install --no-cache-dir -r requirements.txt && pytest -q"
-                '''
-            }
-        }
+    steps {
+        sh '''
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install --no-cache-dir -r requirements.txt
+            pytest -q
+        '''
+    }
+}
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
