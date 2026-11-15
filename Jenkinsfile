@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     docker rm -f ${CONTAINER_NAME} || true
-                    docker run -d --name ${CONTAINER_NAME} -p 5000:5000 ${IMAGE_NAME}:${BUILD_NUMBER}
+                    docker run -d --name ${CONTAINER_NAME} ${IMAGE_NAME}:${BUILD_NUMBER}
                     sleep 5
                     docker run --rm --network container:${CONTAINER_NAME} curlimages/curl:8.10.1 -fsS http://127.0.0.1:5000/health
                 '''
